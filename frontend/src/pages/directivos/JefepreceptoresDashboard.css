@@ -1,0 +1,334 @@
+@import '../../shared.css';
+
+/* ── GRID PRINCIPAL ── */
+.jp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .jp-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .jp-grid {
+    gap: 12px;
+  }
+}
+
+/* ── STATS ── */
+.jp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 992px) {
+  .jp-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .jp-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.jp-stat-card {
+  padding: 24px !important;
+  margin-bottom: 0 !important;
+  transition: transform 0.2s ease;
+}
+
+@media (max-width: 480px) {
+  .jp-stat-card {
+    padding: 20px 16px !important;
+  }
+}
+
+.jp-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.jp-stat-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.jp-stat-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .jp-stat-value {
+    font-size: 1.85rem;
+  }
+}
+
+.jp-stat-value--alert { color: var(--danger); }
+.jp-stat-value--green { color: var(--success); }
+
+.jp-stat-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  display: block;
+}
+
+/* ── CARD DE ACCESOS ── */
+.jp-accesos-card {
+  padding: 32px !important;
+}
+
+@media (max-width: 768px) {
+  .jp-accesos-card {
+    padding: 20px 16px !important;
+  }
+}
+
+.jp-panel-sub {
+  font-size: 0.875rem;
+  color: var(--text-soft);
+  margin-top: -12px;
+  margin-bottom: 24px;
+}
+
+.jp-accesos-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1200px) {
+  .jp-accesos-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .jp-accesos-list {
+    gap: 8px;
+  }
+}
+
+.jp-acceso-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+}
+
+@media (max-width: 480px) {
+  .jp-acceso-btn {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+}
+
+.jp-acceso-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: translateX(4px);
+  border-color: var(--accent-blue);
+  box-shadow: var(--shadow-sm);
+}
+
+.jp-acceso-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-left-color: var(--text-muted);
+}
+
+.jp-acceso-btn--readonly {
+  border-left-color: var(--text-muted);
+}
+
+.jp-acceso-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.jp-acceso-info {
+  flex: 1;
+}
+
+.jp-acceso-titulo {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+}
+
+.jp-acceso-desc {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+}
+
+.jp-acceso-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.jp-acceso-badge--full { background: #dcfce7; color: #166534; }
+.jp-acceso-badge--readonly { background: #f1f5f9; color: #475569; }
+
+.jp-acceso-arrow {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* ── ALERTS ── */
+.jp-alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jp-alert-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-left: 4px solid var(--danger);
+  border-radius: 10px;
+}
+
+.jp-alert-item--warn {
+  background: #fffbeb;
+  border-color: #fef3c7;
+  border-left-color: var(--warning);
+}
+
+.jp-alert-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--danger);
+  box-shadow: var(--shadow-sm);
+}
+
+.jp-alert-item--warn .jp-alert-icon-wrap {
+  color: var(--warning);
+}
+
+.jp-alert-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.jp-alert-detail {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+.jp-alert-count {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--danger);
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.jp-alert-count--warn {
+  background: var(--warning);
+}
+
+/* ── PRECEPTORES ── */
+.jp-prec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jp-prec-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+}
+
+.jp-prec-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.jp-prec-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.jp-prec-turno {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-top: 1px;
+}
+
+.jp-prec-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--gray-200);
+}
+
+.jp-prec-status--absent {
+  background: var(--danger);
+}

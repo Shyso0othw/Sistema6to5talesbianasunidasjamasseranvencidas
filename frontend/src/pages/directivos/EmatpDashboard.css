@@ -1,0 +1,145 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   EmatpDashboard.css — Solo estilos específicos del contenido
+   El layout, sidebar, hero, nav y topbar vienen de shared.css
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Grid ─────────────────────────────────────────────────────────────── */
+.em-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .em-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.em-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Horarios ─────────────────────────────────────────────────────────── */
+.em-horarios-lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.em-horario-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+}
+
+.em-horario-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.em-horario-hora     { font-weight: 700; color: var(--text-main); min-width: 50px; }
+.em-horario-materia  { font-weight: 600; color: var(--text-main); flex: 1; }
+.em-horario-dot      { color: var(--gray-300); }
+.em-horario-curso    {
+  background: #eef2ff;
+  color: var(--accent-blue);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+.em-horario-aula     { color: var(--text-soft); font-size: 13px; margin-left: auto; }
+
+/* ── Comunicados ──────────────────────────────────────────────────────── */
+.em-comunicados-lista { display: flex; flex-direction: column; gap: 10px; }
+
+.em-comunicado-item {
+  border-left: 4px solid var(--accent-blue);
+  padding: 12px 14px;
+  background: var(--gray-50);
+  border-radius: 0 10px 10px 0;
+}
+
+.em-comunicado-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.em-comunicado-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.em-comunicado-badge--preceptor  { background: rgba(74,99,224,0.1);  color: var(--accent-blue); }
+.em-comunicado-badge--direccin   { background: rgba(107,114,128,0.1); color: #374151; }
+.em-comunicado-badge--direccion  { background: rgba(107,114,128,0.1); color: #374151; }
+
+.em-comunicado-fecha  { font-size: 11px; color: var(--text-muted); }
+.em-comunicado-titulo { font-size: 14px; font-weight: 600; color: var(--text-main); margin: 0 0 4px; }
+.em-comunicado-cuerpo { font-size: 13px; color: var(--text-soft); margin: 0; line-height: 1.5; }
+
+/* ── Acceso rápido ────────────────────────────────────────────────────── */
+.em-acceso-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.em-acceso-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  width: 100%;
+}
+
+.em-acceso-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.em-acceso-btn--primary {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+}
+
+.em-acceso-btn--outline {
+  background: #fff;
+  color: var(--accent-blue);
+  border: 1.5px solid var(--accent-blue);
+}
+
+/* ── Cursos asignados ─────────────────────────────────────────────────── */
+.em-cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .em-cursos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.em-curso-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.em-curso-nombre   { font-size: 16px; font-weight: 700; color: var(--text-main); margin: 0 0 4px; }
+.em-curso-alumnos  { font-size: 12px; color: var(--text-soft); margin: 0; }

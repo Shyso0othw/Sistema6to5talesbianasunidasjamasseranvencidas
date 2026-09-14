@@ -1,0 +1,28 @@
+[Unit]
+Description=Sistema escolar ASGI
+After=network.target postgresql.service redis-server.service
+Wants=postgresql.service redis-server.service
+
+[Service]
+Type=simple
+User=sistema-app
+Group=sistema-app
+WorkingDirectory=/srv/sistema-escolar/backend
+EnvironmentFile=/etc/sistema-escolar/app.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/srv/sistema-escolar/.venv/bin/daphne -b 127.0.0.1 -p 8000 --access-log /dev/null backend.asgi:application
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/sistema-escolar/backend/media
+UMask=0027
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

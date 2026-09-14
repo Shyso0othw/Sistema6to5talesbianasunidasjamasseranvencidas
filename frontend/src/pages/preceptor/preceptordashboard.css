@@ -1,0 +1,121 @@
+/* 
+   BLOQUE 1: DISEÑO DE LA REJILLA (GRID)
+   Configura el diseño de la parte inferior del dashboard del preceptor.
+*/
+.pd-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* 
+   BLOQUE 2: ELEMENTOS DE LISTA (CURSOS Y MENSAJES)
+   Estilos para los nombres de cursos, cantidad de estudiantes y previsualización de mensajes.
+*/
+.pd-curso-nombre {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.pd-curso-estudiantes {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin: 2px 0 0;
+}
+
+.pd-mensaje-nombre {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pd-mensaje-texto {
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
+.pd-mensaje-hora {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* 
+   BLOQUE 3: TARJETAS Y FILAS INTERACTIVAS
+   Estilos para el contenedor principal y el efecto de resaltado al pasar el cursor.
+*/
+.pd-main-card {
+  padding: 24px !important;
+  margin-bottom: 24px;
+}
+
+.pd-row-hover {
+  transition: all 0.2s ease;
+  padding: 14px 16px !important;
+  border-radius: 10px;
+  border-bottom: 1px solid var(--gray-50);
+}
+
+.pd-row-hover:hover {
+  background: var(--gray-50);
+  transform: translateX(4px);
+}
+
+.pd-row-hover:last-child {
+  border-bottom: none;
+}
+
+/* 
+   BLOQUE 4: ACCIONES Y BADGES
+   Configuración de botones, alineación y estados de asistencia (Completada/Pendiente).
+*/
+.pd-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pd-evento-card {
+  border-left-width: 5px !important;
+  border-left-style: solid !important;
+  background: #fff !important;
+  border: 1px solid var(--gray-200) !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.pd-evento-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.sh-evento-item--admin { border-left-color: #f59e0b !important; }
+.sh-evento-item--preceptor { border-left-color: #3b82f6 !important; }
+.sh-evento-item--docente { border-left-color: #22c55e !important; }
+
+.pd-btn-wrap {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 170px;
+}
+
+.pd-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Ajustes responsivos para botones en móviles */
+@media (max-width: 480px) {
+  .pd-btn-wrap {
+    min-width: 0;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+}

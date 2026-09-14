@@ -1,0 +1,7 @@
+# System dependencies for ngrok
+# ngrok is a binary, not a Python package
+# Install via: winget install Ngrok.Ngrok
+# Or download from: https://ngrok.com/download
+
+# Python dependencies for ngrok integration (if needed)
+# No Python packages required - ngrok is a standalone binary
