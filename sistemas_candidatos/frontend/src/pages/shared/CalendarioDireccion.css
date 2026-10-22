@@ -1,0 +1,267 @@
+/*
+  CalendarioDireccion.css
+  Estilos exclusivos del modal de Dirección.
+  El resto de estilos del calendario vienen de CalendarioVisualizer.css
+*/
+
+/* ── Overlay del modal ── */
+.cd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+  animation: cd-fade-in 0.18s ease;
+}
+
+@keyframes cd-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal ── */
+.cd-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: cd-slide-up 0.22s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+@keyframes cd-slide-up {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.cd-modal::-webkit-scrollbar { width: 4px; }
+.cd-modal::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* ── Cabecera del modal ── */
+.cd-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cd-modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy, #1a2566);
+  margin: 0;
+}
+
+.cd-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-soft, #6b7280);
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cd-modal-close:hover {
+  background: var(--gray-100, #f0f2f8);
+  color: var(--navy, #1a2566);
+}
+
+/* ── Campos del formulario ── */
+.cd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cd-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main, #111827);
+}
+
+.cd-optional {
+  font-size: 11px;
+  color: var(--text-muted, #9ca3af);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.cd-input,
+.cd-textarea,
+.cd-select {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--gray-200, #e5e7eb);
+  font-size: 14px;
+  transition: all 0.2s;
+  background: #fcfcfd;
+}
+
+/* ── Sección de destinatarios ── */
+.cd-dest-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px;
+}
+
+.cd-dest-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main, #111827);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-200, #e5e7eb);
+  transition: all 0.15s ease;
+  background: #fff;
+}
+
+.cd-dest-option:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.cd-dest-option.active {
+  background: #f0f4ff;
+  border-color: var(--accent-blue, #4a63e0);
+  color: var(--accent-blue, #4a63e0);
+  box-shadow: 0 0 0 1px var(--accent-blue, #4a63e0);
+}
+
+.cd-dest-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-blue, #4a63e0);
+  cursor: pointer;
+  margin: 0;
+}
+.cd-textarea,
+.cd-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--gray-200, #e8eaf0);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text-main, #111827);
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.cd-input:focus,
+.cd-textarea:focus,
+.cd-select:focus {
+  border-color: var(--accent-blue, #4a63e0);
+  box-shadow: 0 0 0 3px rgba(74,99,224,0.1);
+}
+
+.cd-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.cd-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* Fila de dos campos lado a lado */
+.cd-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Separador antes del botón submit ── */
+.cd-submit-wrap {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+  margin-top: 8px;
+}
+
+/* ── Botón submit ── */
+.cd-btn-submit {
+  background: var(--accent-blue, #4a63e0);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+}
+
+.cd-btn-submit:hover {
+  background: #3a52d0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(74,99,224,0.3);
+}
+
+.cd-btn-submit:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.cd-btn-submit:disabled {
+  background: #93a3e8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Botón establecer hora actual ── */
+.cd-btn-time-set {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  min-width: 40px;
+}
+
+.cd-btn-time-set:hover {
+  background: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue);
+}
+
+/* ── Error message ── */
+.cd-error {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #fecaca;
+}

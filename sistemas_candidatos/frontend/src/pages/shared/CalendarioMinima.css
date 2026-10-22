@@ -1,0 +1,15 @@
+/*
+  CalendarioMinima.css
+  Estilos exclusivos del modal Mínima (Docente).
+  No tiene Ciclo — solo Título, Descripción, Fecha, Hora inicio/fin, Lugar, Cursos.
+  Reutiliza CalendarioDireccion.css y CalendarioPreceptoria.css para el resto.
+*/
+
+/* Sin estilos adicionales: el modal Mínima usa exactamente
+   los mismos elementos que Preceptoría pero sin el campo Ciclo.
+   Cualquier diferencia visual futura va acá. */
+
+.cm-modal-title-accent {
+  /* Diferenciador visual opcional para el título del modal docente */
+  /* Actualmente igual al de los otros roles */
+}

@@ -1,0 +1,27 @@
+venv/
+.env
+.env.*
+db.sqlite3
+__pycache__/
+node_modules/
+dist/
+*.log
+*.sql
+*.dump
+backup/
+*.pem
+*.key
+*.crt
+*.p12
+# Templates are public; real environment files remain ignored.
+!.env.example
+!**/.env.example
+.venv/
+.pytest_cache/
+backend/backend/staticfiles/
+backend/media/
+BASE DE DATOS ARCHIVOS/
+backend/proyecto_db1.sql
+
+frontend/playwright-report/
+frontend/test-results/
