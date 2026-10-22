@@ -20,30 +20,28 @@ from django.core.exceptions import ImproperlyConfigured
 def local_required(name):
     value = os.environ.get(name, '').strip()
     if not value or value.startswith('CHANGE_'):
-        raise ImproperlyConfigured(f'{name} is required for local PostgreSQL. See LOCAL_TESTING.md and backend/.env.example.')
+        raise ImproperlyConfigured(f'{name} is required. See LOCAL_TESTING.md and backend/.env.example.')
     return value
 
 SECRET_KEY = local_required('DJANGO_SECRET_KEY')
 if os.environ.get('DB_ENGINE', 'django.db.backends.postgresql') != 'django.db.backends.postgresql':
     raise ImproperlyConfigured('Development requires PostgreSQL; use settings_test explicitly for isolated SQLite unit tests.')
-if os.environ.get('DB_HOST', '127.0.0.1') not in {'localhost','127.0.0.1','::1'}:
-    raise ImproperlyConfigured('Development must use local PostgreSQL, not Supabase or a remote database.')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
-# Database - Use environment variables or default to local PostgreSQL
+# Database - Use environment variables
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'sistema_escolar_local'),
-        'USER': os.environ.get('DB_USER', 'sistema_app_local'),
+        'NAME': os.environ.get('DB_NAME', 'postgres'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': local_required('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': os.environ.get('DB_PORT', '5432'),
         'CONN_MAX_AGE': 0,
+        'OPTIONS': {'sslmode': os.environ.get('DB_SSLMODE', 'require')},
     }
 }
 
