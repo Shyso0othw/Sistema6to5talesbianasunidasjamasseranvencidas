@@ -1,6 +1,6 @@
 # Instalación nativa y puesta en marcha
 
-Objetivo solicitado: Huawei RH1288 V3, Debian 13, Python 3.13, PostgreSQL 17, Redis 8, Nginx, Daphne y systemd. Ruta `/srv/sistema-escolar`. Estas instrucciones preparan una instalación nueva; no importan datos ni copias de Supabase. La certificación en ese servidor está pendiente.
+Objetivo solicitado: Huawei RH1288 V3, Debian 13, Python 3.13, PostgreSQL 17, Redis 8, Nginx, Daphne y systemd. Ruta `/srv/sistema-escolar`. Estas instrucciones preparan una instalación nueva; no importan datos ni copias de bases previas. La certificación en ese servidor está pendiente.
 
 El navegador abre una URL de Nginx. Nginx sirve `frontend/dist` y deriva `/api/` y `/ws/` a Daphne en `127.0.0.1:8000`. systemd inicia y reinicia Daphne. No se ejecuta Vite al abrir la aplicación.
 

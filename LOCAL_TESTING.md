@@ -1,39 +1,27 @@
 # Testing local — EESTN1 en Windows
 
-Este procedimiento usa PostgreSQL 17 vacío, Daphne y Vite. No importa datos ni credenciales de Supabase. No despliega en Huawei. Redis es opcional en development: el canal en memoria permite probar WebSockets en un proceso, sin acreditar Redis ni múltiples procesos.
+Este procedimiento usa una base PostgreSQL alojada, Daphne y Vite. No importa datos ni credenciales de bases previas. No despliega en Huawei. Redis es opcional en development: el canal en memoria permite probar WebSockets en un proceso, sin acreditar Redis ni múltiples procesos.
 
-## 1. PostgreSQL — POWERSHELL / instalador
+## 1. Base de datos — POSTGRESQL ALOJADO
 
-Descargar PostgreSQL 17 para Windows desde [PostgreSQL](https://www.postgresql.org/download/windows/) y el proveedor enlazado EDB. Elegir servidor y herramientas de línea de comandos, puerto 5432 y una contraseña local propia. No usar credenciales históricas. Agregar `C:\Program Files\PostgreSQL\17\bin` al PATH o invocar sus ejecutables por ruta absoluta.
+La base de desarrollo es un proyecto PostgreSQL alojado en Supabase, región `us-east-1`. La conexión directa `db.<ref>.supabase.co` publica únicamente IPv6; en equipos sin IPv6 se usa el pooler IPv4 en `aws-0-us-east-1.pooler.supabase.com:5432` con el usuario `postgres.<ref>`.
+
+No se instala ni se inicializa ningún servidor PostgreSQL local. Solo se necesita el cliente `psql` para comprobar la conexión:
 
 ```powershell
-Get-Service -Name '*postgres*'
 & 'C:\Program Files\PostgreSQL\17\bin\psql.exe' --version
-& 'C:\Program Files\PostgreSQL\17\bin\psql.exe' -h 127.0.0.1 -U postgres -d postgres
+$env:PGPASSWORD='CHANGE_DB_PASSWORD'
+& 'C:\Program Files\PostgreSQL\17\bin\psql.exe' -h aws-0-us-east-1.pooler.supabase.com -p 5432 -U postgres.CHANGE_PROJECT_REF -d postgres -c "select current_database(), version();"
 ```
 
-Durante esta validación se usaron los binarios oficiales 17.11 en una instancia aislada, no un servicio Windows global. Está en `C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\postgresql17`; su cluster está en la carpeta hermana `postgresql17-data`. El informe registra si quedó en ejecución. No inicializar otro cluster en el mismo puerto.
+El puerto 5432 usa modo sesión. El puerto 6543 usa modo transacción y no admite sentencias preparadas persistentes; para Django y `migrate` usar 5432. La conexión exige SSL: `sslmode=require`.
 
-## 2. Crear propietario y base — POSTGRESQL/PSQL
+No crear roles ni bases adicionales: se trabaja sobre la base `postgres` del proyecto. No inicializar un cluster local en el mismo puerto para evitar confundir conexiones.
 
-En psql, conectado como administrador local:
-
-```sql
-CREATE ROLE sistema_app_local LOGIN;
-\password sistema_app_local
-CREATE DATABASE sistema_escolar_local OWNER sistema_app_local;
-ALTER ROLE sistema_app_local CREATEDB;
-\connect sistema_escolar_local
-SELECT current_database(), version();
-\quit
-```
-
-`\password` solicita la contraseña sin escribirla en el SQL. CREATEDB permite al runner Django crear y eliminar `test_sistema_escolar_local`; es un permiso exclusivamente local. No concederlo al usuario de producción. La base pertenece al usuario de aplicación, incluido el esquema public mediante el rol de propietario de la base en PostgreSQL 17. No hace falta conceder privilegios globales a PUBLIC.
-
-## 3. Configuración — BACKEND / POWERSHELL
+## 2. Configuración — BACKEND / POWERSHELL
 
 ```powershell
-Set-Location C:\Users\Usuario\Desktop\sistema\backend
+Set-Location C:\Users\Usuario\Desktop\sistema\sistemas_candidatos\backend
 Copy-Item .env.example .env
 ```
 
@@ -42,15 +30,16 @@ Ejecutar la copia solamente si `.env` no existe. Editar `backend/.env` con estos
 ```dotenv
 DJANGO_ENV=development
 DB_ENGINE=django.db.backends.postgresql
-DB_HOST=127.0.0.1
+DB_HOST=aws-0-us-east-1.pooler.supabase.com
 DB_PORT=5432
-DB_NAME=sistema_escolar_local
-DB_USER=sistema_app_local
-DB_PASSWORD=CHANGE_LOCAL_PASSWORD
+DB_NAME=postgres
+DB_USER=postgres.CHANGE_PROJECT_REF
+DB_PASSWORD=CHANGE_DB_PASSWORD
+DB_SSLMODE=require
 DJANGO_SECRET_KEY=CHANGE_LOCAL_RANDOM_SECRET
 ```
 
-Reemplazar ambos CHANGE_*; nunca dejarlos como credenciales. Puede generarse una clave local con `python -c "import secrets; print(secrets.token_urlsafe(48))"`. El archivo real está ignorado por Git; el ejemplo no contiene secretos. La sesión de validación ya creó un `.env` local con valores aleatorios: conservarlo. Development carga exclusivamente `backend/.env` con dotenv y no pisa variables exportadas en el proceso. Staging/production importan sus settings y reciben variables del entorno/systemd; no cargan dotenv. Sin contraseña/clave, development falla con un mensaje explícito; rechaza DB_HOST remoto y otro DB_ENGINE. DEBUG está activado por el entorno development, no se necesita una variable DEBUG.
+Reemplazar todos los CHANGE_*; nunca dejarlos como credenciales. Puede generarse una clave local con `python -c "import secrets; print(secrets.token_urlsafe(48))"`. El archivo real está ignorado por Git; el ejemplo no contiene secretos. Development carga exclusivamente `backend/.env` con dotenv y no pisa variables exportadas en el proceso. Staging/production importan sus settings y reciben variables del entorno/systemd; no cargan dotenv. Sin contraseña, clave o DB_HOST declarados, development falla con un mensaje explícito. DEBUG está activado por el entorno development, no se necesita una variable DEBUG.
 
 Si PowerShell heredó un entorno diferente, para esta terminal local:
 
@@ -58,7 +47,7 @@ Si PowerShell heredó un entorno diferente, para esta terminal local:
 $env:DJANGO_ENV='development'
 ```
 
-## 4. Dependencias — BACKEND / POWERSHELL
+## 3. Dependencias — BACKEND / POWERSHELL
 
 ```powershell
 py -3.13 -m venv .venv
@@ -71,7 +60,7 @@ py -3.13 -m venv .venv
 & .\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
 ```
 
-No borrar, modificar ni squashear migraciones para inicializar una base vacía. Deben aplicarse 0001–0042. No usar scripts históricos `reset_seed.py`, dumps ni restauraciones. La validación final se ejecutó con Python 3.13.15 y PostgreSQL 17.11 reales en Windows. También hubo una ejecución previa con Python 3.12.14; los resultados finales están en LOCAL-VALIDATION-REPORT.md.
+No borrar, modificar ni squashear migraciones para inicializar una base vacía. Deben aplicarse 0001–0042. No usar scripts históricos `reset_seed.py`, dumps ni restauraciones. La validación final de la cadena de migraciones se ejecutó con Python 3.13.15 y PostgreSQL 17.11 en Windows; los resultados están en LOCAL-VALIDATION-REPORT.md.
 
 Para una cuenta administrativa propia (opcional al probar con seed):
 
@@ -82,7 +71,7 @@ Para una cuenta administrativa propia (opcional al probar con seed):
 
 Consultar `manage.py ensure_admin_profile --help` para su argumento exacto. Los datos sintéticos incluyen una cuenta con rol admin de la app; no es superusuario Django.
 
-## 5. Datos sintéticos — BACKEND
+## 4. Datos sintéticos — BACKEND
 
 ```powershell
 & .\.venv\Scripts\python.exe manage.py seed_test_data
@@ -90,6 +79,8 @@ Consultar `manage.py ensure_admin_profile --help` para su argumento exacto. Los 
 ```
 
 DEVELOPMENT ONLY — DO NOT USE IN STAGING/PRODUCTION.
+
+`seed_test_data` exige development y una base cuyo nombre termine en `_local`, o `settings_test` explícito para las pruebas unitarias. La base alojada se llama `postgres`, por lo que el comando la rechaza: es una protección para no escribir datos ficticios en la base del proyecto. Para pruebas funcionales con datos ficticios usar `--settings=backend.settings_test`.
 
 Contraseña pública de prueba para todas las cuentas nuevas: `Synthetic!Password-4921`. Puede cambiarse antes de la primera carga mediante TEST_DATA_PASSWORD; los E2E deberán recibir el mismo valor en TEST_PASS. Repetir el seed no cambia contraseñas ni datos editados.
 
@@ -108,9 +99,9 @@ Contraseña pública de prueba para todas las cuentas nuevas: `Synthetic!Passwor
 | test_ematp | EMATP |
 | test_auxiliar | Auxiliar |
 
-Los emails terminan en `.example.invalid`. El comando exige development y una DB cuyo nombre termine en `_local`, o settings_test explícito para las pruebas unitarias. Staging y production están bloqueados. Es transaccional; rechaza colisiones de usuarios fuera del namespace ficticio. Crea 19 cuentas, 4 alumnos, cursos 1°A/2°B/7°A, grupos A/B, materias/asignaciones, familia, horarios, notas, tres estados de asistencia, un comunicado, evento, libro, préstamo pendiente, notificaciones, chat individual y grupo de cuatro con 205 mensajes. Muestra CREATED y EXISTING. No se ejecuta automáticamente.
+Los emails terminan en `.example.invalid`. Es transaccional; rechaza colisiones de usuarios fuera del namespace ficticio. Crea 19 cuentas, 4 alumnos, cursos 1°A/2°B/7°A, grupos A/B, materias/asignaciones, familia, horarios, notas, tres estados de asistencia, un comunicado, evento, libro, préstamo pendiente, notificaciones, chat individual y grupo de cuatro con 205 mensajes. Muestra CREATED y EXISTING. No se ejecuta automáticamente.
 
-## 6. Levantar la aplicación — dos terminales
+## 5. Levantar la aplicación — dos terminales
 
 BACKEND:
 
@@ -121,7 +112,7 @@ BACKEND:
 FRONTEND (Node ^20.19.0 o >=22.12.0; validado con 24.15.0):
 
 ```powershell
-Set-Location C:\Users\Usuario\Desktop\sistema\frontend
+Set-Location C:\Users\Usuario\Desktop\sistema\sistemas_candidatos\frontend
 npm ci
 npm run dev -- --port 5173 --strictPort
 ```
@@ -130,15 +121,15 @@ Abrir `http://127.0.0.1:5173`. Vite redirige `/api` a `http://127.0.0.1:8000` y 
 
 Detener Vite antes de repetir npm ci en Windows: los módulos nativos en uso pueden provocar EPERM. No ejecutar npm como administrador para resolver ese bloqueo.
 
-## 7. Pruebas — BACKEND
+## 6. Pruebas — BACKEND
 
 ```powershell
 & .\.venv\Scripts\python.exe manage.py test usuarios.test_hardening usuarios.test_websockets usuarios.test_seed usuarios.test_local_validation -v 2 --noinput
 ```
 
-Este comando, con development, utiliza PostgreSQL y crea una base de test separada; no vacía la base sintética manual. Para SQLite aislado se debe elegir expresamente `--settings=backend.settings_test`; ese resultado no certifica PostgreSQL. Los WebSocket tests usan Channels en memoria en development. Redis 8 y entrega entre procesos quedan para infraestructura compatible/Huawei.
+Con development y la base alojada, Django crea una base de test separada y no vacía la base del proyecto. Para SQLite aislado se debe elegir expresamente `--settings=backend.settings_test`; ese resultado no certifica PostgreSQL. Los WebSocket tests usan Channels en memoria en development. Redis 8 y entrega entre procesos quedan para infraestructura compatible/Huawei.
 
-## 8. Pruebas — FRONTEND
+## 7. Pruebas — FRONTEND
 
 ```powershell
 npm run lint
@@ -149,36 +140,18 @@ $env:BASE_URL='http://127.0.0.1:5173'
 npm run test:e2e
 ```
 
-Backend y seed deben estar listos antes del E2E. Playwright inicia/reutiliza Vite en 5173; no utiliza `vite preview` sin proxy. Los tests emplean cuentas distintas por rol y verifican DOM/operaciones, ya que la app navega por estado y no tiene rutas `/inicio` o `/mis-cursos`. Resultados y capturas quedan en `test-results/` y `playwright-report/`, ignorados por Git. Para ejecución visible: `npm run test:e2e:headed`.
+Backend y datos de prueba deben estar listos antes del E2E. Playwright inicia/reutiliza Vite en 5173; no utiliza `vite preview` sin proxy. Los tests emplean cuentas distintas por rol y verifican DOM/operaciones, ya que la app navega por estado y no tiene rutas `/inicio` o `/mis-cursos`. Resultados y capturas quedan en `test-results/` y `playwright-report/`, ignorados por Git. Para ejecución visible: `npm run test:e2e:headed`.
 
-## 9. Restablecimiento manual — SOLO DB local descartable
+## 8. Restablecimiento — SOLO BASE DESCARTABLE
 
-No se agregó reset_test_data: las relaciones y los registros creados manualmente sobre el seed impiden garantizar un borrado selectivo sin pérdida accidental. Para reiniciar, detener backend y tests y comprobar nombre y conexiones en psql. Solo si la DB local completa es descartable:
+No se agregó reset_test_data: las relaciones y los registros creados manualmente sobre el seed impiden garantizar un borrado selectivo sin pérdida accidental. Para reiniciar la base alojada, recrearla desde el panel del proveedor cuando el contenido sea descartable, y volver a ejecutar migrate.
 
 ```sql
 -- Conectado a postgres, nunca a una base escolar real:
-SELECT datname FROM pg_database WHERE datname = 'sistema_escolar_local';
--- Tras verificar manualmente el nombre y que no contiene datos a conservar:
-DROP DATABASE sistema_escolar_local;
-CREATE DATABASE sistema_escolar_local OWNER sistema_app_local;
+SELECT datname FROM pg_database WHERE datname = 'postgres';
+-- Tras verificar manualmente que no contiene datos a conservar:
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
 ```
 
-Volver a ejecutar migrate y seed. No usar FORCE ni flush automático. Estos comandos son instrucciones manuales y no se ejecutaron sobre datos existentes durante la validación.
-
-## 10. Reutilizar la instalación portátil de esta sesión
-
-PostgreSQL quedó iniciado en loopback. Después de reiniciar Windows, consultar su estado y arrancarlo sólo si está detenido:
-
-```powershell
-& 'C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\postgresql17\pgsql\bin\pg_ctl.exe' status -D 'C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\postgresql17-data'
-& 'C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\postgresql17\pgsql\bin\pg_ctl.exe' start -D 'C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\postgresql17-data' -l 'C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\postgresql17.log'
-```
-
-No requiere conocer la contraseña de PostgreSQL para arrancar ese cluster con el mismo usuario Windows. La aplicación usa su `.env` existente. Para iniciar Daphne con el entorno ya validado:
-
-```powershell
-Set-Location C:\Users\Usuario\Desktop\sistema\backend
-& 'C:\Users\Usuario\Documents\Codex\2026-09-10\h\work\validation313\Scripts\python.exe' -m daphne -b 127.0.0.1 -p 8000 backend.asgi:application
-```
-
-En otra terminal iniciar Vite según la sección 6. Estos procesos se detuvieron al finalizar las pruebas. No repetir initdb ni recrear la base para simplemente volver a abrir la app.
+No usar FORCE ni flush automático. Estos comandos son instrucciones manuales y no se ejecutaron sobre datos existentes durante la validación.
