@@ -1,0 +1,193 @@
+/* 
+   BLOQUE 1: DISEÑO DE LA REJILLA (GRID)
+   Define la disposición de las tarjetas en el dashboard principal.
+*/
+.db-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .db-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* 
+   BLOQUE 2: LISTADO DE CLASES
+   Estilos para las filas de horarios, materias y aulas.
+*/
+.db-class-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.db-class-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--gray-100);
+}
+
+.db-class-item:first-child { border-top: none; }
+
+.db-class-time {
+  display: flex;
+  flex-direction: column;
+  min-width: 50px;
+}
+
+.db-time-start {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.db-time-end {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.db-class-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.db-class-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.db-class-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.db-class-meta {
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+/* 
+   BLOQUE 3: EVENTOS Y COMUNICADOS
+   Estilos específicos para las tarjetas de eventos próximos y mensajes institucionales.
+*/
+.db-events-list,
+.db-comunicados-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaciado entre elementos */
+}
+
+.db-evento-card {
+  padding: 16px;
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  border-left-width: 5px;
+  border-left-color: #6366f1; /* Default color if no type matches */
+}
+
+.db-evento-card--admin, .db-evento-card--direccion { border-left-color: #f59e0b; }
+.db-evento-card--preceptor { border-left-color: #3b82f6; }
+.db-evento-card--docente { border-left-color: #22c55e; }
+
+.db-evento-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: #6366f1; /* Default color if no type matches */
+  transition: width 0.2s, background-color 0.2s;
+}
+
+.db-evento-card--admin .db-evento-indicator, .db-evento-card--direccion .db-evento-indicator { background-color: #f59e0b; }
+.db-evento-card--preceptor .db-evento-indicator { background-color: #3b82f6; }
+.db-evento-card--docente .db-evento-indicator { background-color: #22c55e; }
+
+.db-evento-card:hover .db-evento-indicator {
+  width: 8px;
+}
+
+.db-evento-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--accent-light);
+}
+
+.db-evento-card .sh-evento-nombre {
+  font-size: 15px;
+  margin: 6px 0;
+}
+
+.db-evento-card .sh-evento-fecha {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* 
+   BLOQUE 4: ASISTENCIA CRÍTICA
+   Estilos para las barras de progreso y porcentajes de asistencia por materia.
+*/
+.db-asist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.db-asist-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.db-asist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.db-asist-subject {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.db-asist-pct {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Colores de porcentaje según gravedad */
+.db-asist-pct--ok { color: var(--success); }
+.db-asist-pct--med { color: var(--warning); }
+.db-asist-pct--warn { color: var(--danger); }
+
+.db-progress-bg {
+  height: 6px;
+  background: var(--gray-200);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.db-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.db-progress-fill--ok { background: var(--success); }
+.db-progress-fill--med { background: var(--warning); }
+.db-progress-fill--warn { background: var(--danger); }
