@@ -1,0 +1,54 @@
+@import '../../shared.css';
+
+/* ── ACCESOS RÁPIDOS ── */
+.eoe-acciones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .eoe-acciones-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── MAIN GRID ── */
+.eoe-main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .eoe-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── EVENTOS ── */
+.eoe-eventos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eoe-evento-card {
+  border-left-width: 5px !important;
+  border-left-style: solid !important;
+  background: #fff !important;
+  border: 1px solid var(--gray-200) !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.eoe-evento-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.sh-evento-item--admin { border-left-color: #f59e0b !important; }
+.sh-evento-item--preceptor { border-left-color: #3b82f6 !important; }
+.sh-evento-item--docente { border-left-color: #22c55e !important; }
+

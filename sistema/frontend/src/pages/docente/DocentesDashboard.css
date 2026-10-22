@@ -1,0 +1,157 @@
+/* 
+   BLOQUE 1: REJILLA DE CONTENIDO (GRID)
+   Configura el diseño responsivo de los paneles del docente.
+*/
+.dd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+/* La tarjeta de clases ocupa todo el ancho disponible */
+.dd-clases-card {
+  grid-column: 1 / -1;
+  padding: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .dd-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* 
+   BLOQUE 2: ACCESOS RÁPIDOS
+   Estilos para los botones grandes de la cabecera (Tomar asistencia, Cargar notas).
+*/
+.dd-acciones-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 480px) {
+  .dd-acciones-header {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 
+   BLOQUE 3: LISTADO DE CLASES
+   Estilos para las filas de clases con efectos de hover y bordes de colores.
+*/
+.dd-clases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dd-clase-row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-left: 6px solid var(--accent-blue);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dd-clase-row:hover {
+  transform: translateX(6px);
+  border-color: var(--accent-light);
+  box-shadow: var(--shadow-lg);
+}
+
+.dd-clase-btn-wrap {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 180px;
+}
+
+/* 
+   BLOQUE 4: COMPONENTES COMUNES (BADGES Y BOTONES)
+   Estilos específicos para estados de asistencia y botones pequeños.
+*/
+.dd-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dd-evento-card {
+  border-left-width: 5px !important;
+  border-left-style: solid !important;
+  background: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+  border-radius: 16px !important;
+}
+
+.dd-evento-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.sh-evento-item--admin { border-left-color: #f59e0b !important; }
+.sh-evento-item--preceptor { border-left-color: #3b82f6 !important; }
+.sh-evento-item--docente { border-left-color: #22c55e !important; }
+
+.dd-clase-hora {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.dd-clase-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dd-clase-nombre {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.dd-clase-aula {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+/* Estilos para encabezados del boletín */
+.boletin-th-field {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.boletin-td-field {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Ajustes responsivos para las filas de clases en móviles */
+@media (max-width: 768px) {
+  .dd-clase-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .dd-clase-row > div:last-child {
+    justify-content: flex-start;
+  }
+}

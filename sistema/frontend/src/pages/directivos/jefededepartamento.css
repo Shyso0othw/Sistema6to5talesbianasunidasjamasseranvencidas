@@ -1,0 +1,224 @@
+@import '../../shared.css';
+
+/* ── HEADER ── */
+.jd-header {
+  margin-bottom: 24px;
+}
+
+.jd-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+
+.jd-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-soft);
+  margin-top: 4px;
+}
+
+/* ── STATS ── */
+.jd-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .jd-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .jd-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.jd-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px !important;
+  margin-bottom: 0 !important;
+  transition: transform 0.2s ease;
+}
+
+@media (max-width: 480px) {
+  .jd-stat-card {
+    padding: 20px 16px !important;
+    gap: 12px;
+  }
+}
+
+.jd-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.jd-stat-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .jd-stat-icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+  .jd-stat-icon-wrap svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.jd-stat-number {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .jd-stat-number {
+    font-size: 1.5rem;
+  }
+}
+
+.jd-stat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-top: 4px;
+}
+
+/* ── DOCENTES ── */
+.jd-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+  .jd-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+.jd-gestionar {
+  font-size: 0.85rem;
+  color: var(--accent-blue);
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jd-gestionar:hover {
+  text-decoration: underline;
+}
+
+.jd-docentes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+.jd-docente-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+@media (max-width: 480px) {
+  .jd-docente-row {
+    padding: 12px 0;
+  }
+}
+
+/* Borde derecho solo en desktop para la primera columna */
+@media (min-width: 769px) {
+  .jd-docente-row:nth-child(odd) {
+    padding-right: 24px;
+    border-right: 1px solid var(--gray-100);
+  }
+  .jd-docente-row:nth-child(even) {
+    padding-left: 24px;
+  }
+}
+
+.jd-docente-row:last-child,
+.jd-docente-row:nth-last-child(2) {
+  border-bottom: none;
+}
+
+.jd-docente-info {
+  flex: 1;
+}
+
+.jd-docente-nombre {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.jd-docente-materia {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+
+.jd-docente-horas {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 2px 0 0 0;
+}
+
+.jd-docente-inactivo {
+  opacity: 0.6;
+}
+
+.jd-docente-inactivo .jd-docente-nombre {
+  text-decoration: line-through;
+}
+
+@media (max-width: 768px) {
+  .jd-docentes-grid {
+    grid-template-columns: 1fr;
+  }
+  .jd-docente-row {
+    padding: 16px 0;
+    border-right: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .jd-docente-row:nth-last-child(2) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+}
+
+@media (max-width: 480px) {
+  .jd-docente-row:last-child {
+    border-bottom: none;
+  }
+}
