@@ -93,7 +93,7 @@ Estados: **V** = corrección con evidencia específica; **P** = implementación/
 |---|---|---|
 | 0 | V/P | Correcciones localizadas y persistentes; aceptación integral no cerrada |
 | 1 | E | Objetivo nativo preparado, no instalado |
-| 2 | V | PostgreSQL vacío sin Supabase |
+| 2 | V | PostgreSQL vacío |
 | 3 | V | N01–N05 con evidencia |
 | 4 | V/P | Política de cuentas; todas las combinaciones visuales pendientes |
 | 5 | P | Desarrollo separado; ngrok no ejecutado |

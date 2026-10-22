@@ -16,13 +16,12 @@ DEBUG = False
 ALLOWED_HOSTS = [v.strip() for v in required('ALLOWED_HOSTS').split(',') if v.strip()]
 if '*' in ALLOWED_HOSTS or any('ngrok' in host.lower() for host in ALLOWED_HOSTS):
     raise ImproperlyConfigured('Wildcard hosts and ngrok are not allowed in deployed environments')
-DB_HOST = os.environ.get('DB_HOST', '127.0.0.1')
-if DB_HOST not in {'127.0.0.1', 'localhost', '::1'}:
-    raise ImproperlyConfigured('This native deployment requires local PostgreSQL')
+DB_HOST = required('DB_HOST')
 DATABASES = {'default': {
     'ENGINE':'django.db.backends.postgresql', 'NAME':required('DB_NAME'),
     'USER':required('DB_USER'), 'PASSWORD':required('DB_PASSWORD'),
     'HOST':DB_HOST, 'PORT':os.environ.get('DB_PORT', '5432'), 'CONN_MAX_AGE':0,
+    'OPTIONS': {'sslmode': os.environ.get('DB_SSLMODE', 'require')},
 }}
 REDIS_URL = required('REDIS_URL')
 redis = urlparse(REDIS_URL)

@@ -17,7 +17,7 @@ El código queda como candidato de trabajo para completar aceptación, sin commi
 - Python **3.13.15**, venv limpio; requirements instalados y `pip check` aprobado. También existió una ejecución previa con Python 3.12; los resultados finales siguientes son de 3.13.
 - `migrate --plan`, `migrate`, `showmigrations`: cadena de usuarios **0001–0042 aplicada**, junto con las migraciones Django y blacklist JWT, sobre una base vacía.
 - `makemigrations --check --dry-run`: exit 0, **No changes detected**. `manage.py check`: exit 0.
-- No se usaron Supabase, dumps ni información escolar real. El `.env` local tiene valores aleatorios y está ignorado por Git.
+- No se usaron dumps ni información escolar real. El `.env` local tiene valores aleatorios y está ignorado por Git.
 - No se instaló un servicio Windows global. La instancia portátil local quedó disponible; ver `LOCAL_TESTING.md` y las rutas de esta sesión al final.
 
 ## HARDENING TESTS
